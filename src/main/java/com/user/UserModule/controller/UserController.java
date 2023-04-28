@@ -22,6 +22,7 @@ public class UserController {
    @GetMapping("/users")
     public List<User> getAllUsers() {
         List<User> users= (List<User>) userService.getAllUsers();
+       System.out.println("git changes");
         return users;
     }
 
