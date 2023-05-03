@@ -19,14 +19,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password", nullable = false, unique = true)
     private String password;
 
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address")
+    @JoinColumn(name = "address", referencedColumnName = "id"   )
     private Address address;
 
 

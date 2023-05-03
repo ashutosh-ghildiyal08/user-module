@@ -11,10 +11,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UpdateUserRequest {
-    private Integer userId;
-    private String username;
+    private String id;
+    private String email;
     private String password;
-    private Address address;
+    private String firstName;
+    private String lastName;
     private String address_line1;
     private String address_line2;
+    private String city;
+    private String country;
 }

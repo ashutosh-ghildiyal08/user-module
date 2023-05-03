@@ -6,6 +6,7 @@ import com.user.UserModule.repository.AddressRepository;
 import com.user.UserModule.repository.UserRepository;
 import com.user.UserModule.request.AddUserRequest;
 import com.user.UserModule.request.UpdateUserRequest;
+import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
+    ObjectTranslator objectTranslator;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -22,18 +25,22 @@ public class UserService {
     }
 
     public void addUser(AddUserRequest addUserRequest) {
-        Address address = new Address();
-        address.setAddress_line1(addUserRequest.getAddress_line1());
-        address.setAddress_line2(addUserRequest.getAddress_line2());
+
+        Address address = Address.builder()
+                .address_line1(addUserRequest.getAddress_line1())
+                .address_line2(addUserRequest.getAddress_line2())
+                .city(addUserRequest.getCity())
+                .country(addUserRequest.getCountry())
+                .build();
+
         addressRepository.save(address);
-        User user = new User();
-        user.setUsername(addUserRequest.getUsername());
-        user.setPassword(addUserRequest.getPassword());
+
+        User user = objectTranslator.translate(addUserRequest,User.class);
         user.setAddress(address);
+
         userRepository.save(user);
 
     }
-
 
     public User getSingleUser(Integer userId) {
         return userRepository.findById(userId).get();
@@ -41,13 +48,21 @@ public class UserService {
 
 
     public void updateUser(UpdateUserRequest updateUserRequest) {
-        Address address = updateUserRequest.getAddress();
+        int userId = Integer.parseInt(updateUserRequest.getId());
+        User user = userRepository.findById(userId).get();
+
+        Address address = user.getAddress();
         address.setAddress_line1(updateUserRequest.getAddress_line1());
         address.setAddress_line2(updateUserRequest.getAddress_line2());
+        address.setCity(updateUserRequest.getCity());
+        address.setCountry(updateUserRequest.getCountry());
+
         addressRepository.save(address);
-        User user = new User();
-        user.setUsername(updateUserRequest.getUsername());
+
+        user.setEmail(updateUserRequest.getEmail());
         user.setPassword(updateUserRequest.getPassword());
+        user.setFirstName(updateUserRequest.getFirstName());
+        user.setLastName(updateUserRequest.getLastName());
         user.setAddress(address);
         userRepository.save(user);
     }
