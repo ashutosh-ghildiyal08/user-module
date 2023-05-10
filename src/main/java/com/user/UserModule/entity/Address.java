@@ -1,17 +1,20 @@
 package com.user.UserModule.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-public class Address {
+public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

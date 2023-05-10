@@ -2,6 +2,7 @@ package com.user.UserModule.service;
 
 import com.user.UserModule.entity.Address;
 import com.user.UserModule.entity.User;
+import com.user.UserModule.publisher.UserPublisher;
 import com.user.UserModule.repository.AddressRepository;
 import com.user.UserModule.repository.UserRepository;
 import com.user.UserModule.request.AddUserRequest;
@@ -10,6 +11,7 @@ import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,4 +73,13 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    public List<UserPublisher> getAllUsersForPublisher() {
+        List<User> users = (List<User>) userRepository.findAll();
+        List<UserPublisher> userPublisherList = new ArrayList<UserPublisher>() ;
+        for (User user: users) {
+            UserPublisher userPublisher = objectTranslator.translate(user, UserPublisher.class);
+            userPublisherList.add(userPublisher);
+        }
+        return userPublisherList;
+    }
 }

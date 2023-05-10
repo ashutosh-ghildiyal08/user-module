@@ -1,10 +1,12 @@
 package com.user.UserModule.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import lombok.ToString;
 @Entity
 
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +36,9 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address", referencedColumnName = "id"   )
     private Address address;
-
+    @Override
+    public String toString() {
+        return "[" + id + " " + email + "]";
+    }
 
 }
