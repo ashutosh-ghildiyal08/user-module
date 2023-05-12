@@ -8,23 +8,23 @@
 <!--
   <changeSet id="03" author="Ashutosh">
     <comment>Inserting Users</comment>
-    <insert tableName="users">
+    <insert tableName="userEntities">
       <column name="id" valueNumeric="1"/>
       <column name="username" value="user1"/>
         <column name="password" value="pass1"/>
       <column name="email" value="abc@123"/>
       <column name="first_name" value="A"/>
       <column name="last_name" value="B"/>
-      <column name="address" valueNumeric="01"/>
+      <column name="addressEntity" valueNumeric="01"/>
     </insert>
-    <insert tableName="users">
+    <insert tableName="userEntities">
       <column name="id" valueNumeric="2"/>
       <column name="username" value="user2"/>
       <column name="password" value="pass2"/>
       <column name="email" value="xyz@123"/>
       <column name="first_name" value="X"/>
       <column name="last_name" value="Y"/>
-      <column name="address" valueNumeric="02"/>
+      <column name="addressEntity" valueNumeric="02"/>
     </insert>-->
 
   </changeSet>

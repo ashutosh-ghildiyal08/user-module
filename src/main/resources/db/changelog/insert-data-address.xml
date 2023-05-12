@@ -8,14 +8,14 @@
 
 <!--  <changeSet id="02" author="Ashutosh">-->
 <!--    <comment>Inserting Address</comment>-->
-<!--    <insert tableName="address">-->
+<!--    <insert tableName="addressEntity">-->
 <!--      <column name="id" valueNumeric="1"/>-->
 <!--      <column name="address_line1" value="line 1"/>-->
 <!--      <column name="address_line2" value="line 2"/>-->
 <!--      <column name="city" value="Delhi"/>-->
 <!--      <column name="country" value="India"/>-->
 <!--    </insert>-->
-<!--    <insert tableName="address">-->
+<!--    <insert tableName="addressEntity">-->
 <!--      <column name="id" valueNumeric="2"/>-->
 <!--      <column name="address_line1" value="line 1"/>-->
 <!--      <column name="address_line2" value="line 2"/>-->

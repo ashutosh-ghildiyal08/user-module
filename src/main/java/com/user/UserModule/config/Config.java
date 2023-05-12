@@ -19,7 +19,7 @@ public class Config {
 
     @Bean
     public Queue queue() {
-        return new ActiveMQQueue("demo");
+        return new ActiveMQQueue("user");
     }
 
     @Bean

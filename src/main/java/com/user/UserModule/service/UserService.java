@@ -1,17 +1,13 @@
 package com.user.UserModule.service;
 
-import com.user.UserModule.entity.Address;
-import com.user.UserModule.entity.User;
+import com.user.UserModule.dao.UserDao;
+import com.user.UserModule.entity.UserEntity;
 import com.user.UserModule.publisher.UserPublisher;
-import com.user.UserModule.repository.AddressRepository;
-import com.user.UserModule.repository.UserRepository;
-import com.user.UserModule.request.AddUserRequest;
-import com.user.UserModule.request.UpdateUserRequest;
+import com.user.UserModule.response.UserDto;
 import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,67 +15,48 @@ public class UserService {
     @Autowired
     ObjectTranslator objectTranslator;
     @Autowired
-    UserRepository userRepository;
+    UserDao userDao;
+
     @Autowired
-    AddressRepository addressRepository;
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    PublishService publishService;
+
+
+    public List<UserDto> getAllUsers(){
+
+        return userDao.getAllUsers();
     }
 
-    public void addUser(AddUserRequest addUserRequest) {
-
-        Address address = Address.builder()
-                .address_line1(addUserRequest.getAddress_line1())
-                .address_line2(addUserRequest.getAddress_line2())
-                .city(addUserRequest.getCity())
-                .country(addUserRequest.getCountry())
-                .build();
-
-        addressRepository.save(address);
-
-        User user = objectTranslator.translate(addUserRequest,User.class);
-        user.setAddress(address);
-
-        userRepository.save(user);
+    public UserDto addUser(UserDto userDto) {
+        //validation
+        UserDto responseUserDto = userDao.addUser(userDto);
+        //publish
+        UserPublisher userPublisher = objectTranslator.translate(responseUserDto, UserPublisher.class);
+        String message = objectTranslator.writeValueAsString(userPublisher, "addUser");
+        publishService.publishMessage(message, "user");
+        return responseUserDto;
 
     }
 
-    public User getSingleUser(Integer userId) {
-        return userRepository.findById(userId).get();
+    public UserDto getSingleUser(Integer userId) {
+        return userDao.getSingleUser(userId);
     }
 
 
-    public void updateUser(UpdateUserRequest updateUserRequest) {
-        int userId = Integer.parseInt(updateUserRequest.getId());
-        User user = userRepository.findById(userId).get();
-
-        Address address = user.getAddress();
-        address.setAddress_line1(updateUserRequest.getAddress_line1());
-        address.setAddress_line2(updateUserRequest.getAddress_line2());
-        address.setCity(updateUserRequest.getCity());
-        address.setCountry(updateUserRequest.getCountry());
-
-        addressRepository.save(address);
-
-        user.setEmail(updateUserRequest.getEmail());
-        user.setPassword(updateUserRequest.getPassword());
-        user.setFirstName(updateUserRequest.getFirstName());
-        user.setLastName(updateUserRequest.getLastName());
-        user.setAddress(address);
-        userRepository.save(user);
+    public UserDto updateUser(UserDto userDto) {
+        UserDto responseUserDto =  userDao.updateUser(userDto);
+        return responseUserDto;
     }
 
     public void deleteUser(Integer userId) {
-        userRepository.deleteById(userId);
+        userDao.deleteUser(userId);
     }
 
     public List<UserPublisher> getAllUsersForPublisher() {
-        List<User> users = (List<User>) userRepository.findAll();
-        List<UserPublisher> userPublisherList = new ArrayList<UserPublisher>() ;
-        for (User user: users) {
-            UserPublisher userPublisher = objectTranslator.translate(user, UserPublisher.class);
-            userPublisherList.add(userPublisher);
-        }
-        return userPublisherList;
+        return userDao.getAllUsersForPublisher();
+    }
+
+    public UserPublisher getOneUserForPublisher() {
+
+        return null;
     }
 }
