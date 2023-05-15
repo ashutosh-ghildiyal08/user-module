@@ -1,8 +1,7 @@
 package com.user.UserModule.service;
 
 import com.user.UserModule.dao.UserDao;
-import com.user.UserModule.entity.UserEntity;
-import com.user.UserModule.publisher.UserPublisher;
+import com.user.UserModule.publisher.AddUserPublisher;
 import com.user.UserModule.response.UserDto;
 import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,8 @@ public class UserService {
         //validation
         UserDto responseUserDto = userDao.addUser(userDto);
         //publish
-        UserPublisher userPublisher = objectTranslator.translate(responseUserDto, UserPublisher.class);
-        String message = objectTranslator.writeValueAsString(userPublisher, "addUser");
+        AddUserPublisher addUserPublisher = objectTranslator.translate(responseUserDto, AddUserPublisher.class);
+        String message = objectTranslator.writeValueAsString(addUserPublisher, "add");
         publishService.publishMessage(message, "user");
         return responseUserDto;
 
@@ -49,14 +48,9 @@ public class UserService {
 
     public void deleteUser(Integer userId) {
         userDao.deleteUser(userId);
+
+        String message = "action=delete," +"id=" +userId;
+        publishService.publishMessage(message, "user");
     }
 
-    public List<UserPublisher> getAllUsersForPublisher() {
-        return userDao.getAllUsersForPublisher();
-    }
-
-    public UserPublisher getOneUserForPublisher() {
-
-        return null;
-    }
 }

@@ -2,7 +2,6 @@ package com.user.UserModule.dao;
 
 import com.user.UserModule.entity.AddressEntity;
 import com.user.UserModule.entity.UserEntity;
-import com.user.UserModule.publisher.UserPublisher;
 import com.user.UserModule.repository.AddressRepository;
 import com.user.UserModule.repository.UserRepository;
 import com.user.UserModule.response.UserDto;
@@ -90,18 +89,4 @@ public class UserDao {
         userRepository.deleteById(userId);
     }
 
-    public List<UserPublisher> getAllUsersForPublisher() {
-        List<UserEntity> userEntities = (List<UserEntity>) userRepository.findAll();
-        List<UserPublisher> userPublisherList = new ArrayList<UserPublisher>() ;
-        for (UserEntity userEntity : userEntities) {
-            UserPublisher userPublisher = objectTranslator.translate(userEntity, UserPublisher.class);
-            userPublisherList.add(userPublisher);
-        }
-        return userPublisherList;
-    }
-
-    public UserPublisher getOneUserForPublisher() {
-
-        return null;
-    }
 }

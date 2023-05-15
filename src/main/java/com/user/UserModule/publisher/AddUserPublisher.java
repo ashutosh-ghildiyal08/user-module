@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserPublisher {
+public class AddUserPublisher {
     private Integer id;
     private String email;
 

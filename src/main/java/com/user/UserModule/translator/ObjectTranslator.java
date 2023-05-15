@@ -28,7 +28,7 @@ public class ObjectTranslator {
     }
     public String writeValueAsString(Object value, String action)  {
         try {
-            String s = "action=" +action +"," +objectMapper.writeValueAsString(value);;
+            String s = "action=" +action +"," +objectMapper.writeValueAsString(value);
             return s;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
