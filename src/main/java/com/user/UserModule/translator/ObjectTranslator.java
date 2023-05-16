@@ -26,10 +26,14 @@ public class ObjectTranslator {
     public <T, R> R translate(T source, Class<R> targetType) {
         return modelMapper.map(source, targetType);
     }
-    public String writeValueAsString(Object value, String action)  {
+    public String translatePayloadAsString(Object payload, String action)  {
+        String finalPayloadMessage = "action=" +action +",";
         try {
-            String s = "action=" +action +"," +objectMapper.writeValueAsString(value);
-            return s;
+            if(action=="DELETE")
+                finalPayloadMessage += "id=" +objectMapper.writeValueAsString(payload);
+            else
+                finalPayloadMessage += objectMapper.writeValueAsString(payload);
+            return finalPayloadMessage;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

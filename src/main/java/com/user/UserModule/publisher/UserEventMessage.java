@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddUserPublisher {
+public class UserEventMessage {
     private Integer id;
     private String email;
 

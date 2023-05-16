@@ -1,7 +1,7 @@
 package com.user.UserModule.service;
 
 import com.user.UserModule.dao.UserDao;
-import com.user.UserModule.publisher.AddUserPublisher;
+import com.user.UserModule.publisher.UserEventMessage;
 import com.user.UserModule.response.UserDto;
 import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class UserService {
         //validation
         UserDto responseUserDto = userDao.addUser(userDto);
         //publish
-        AddUserPublisher addUserPublisher = objectTranslator.translate(responseUserDto, AddUserPublisher.class);
-        String message = objectTranslator.writeValueAsString(addUserPublisher, "add");
+        UserEventMessage userEventMessage = objectTranslator.translate(responseUserDto, UserEventMessage.class);
+        String message = objectTranslator.translatePayloadAsString(userEventMessage, "CREATE");
         publishService.publishMessage(message, "user");
         return responseUserDto;
 
@@ -49,7 +49,7 @@ public class UserService {
     public void deleteUser(Integer userId) {
         userDao.deleteUser(userId);
 
-        String message = "action=delete," +"id=" +userId;
+        String message = objectTranslator.translatePayloadAsString(userId, "DELETE");
         publishService.publishMessage(message, "user");
     }
 
