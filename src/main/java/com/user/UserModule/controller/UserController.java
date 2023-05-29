@@ -1,6 +1,7 @@
 package com.user.UserModule.controller;
 
 import com.user.UserModule.request.AddUserRequest;
+import com.user.UserModule.request.LoginRequest;
 import com.user.UserModule.request.UpdateUserRequest;
 import com.user.UserModule.response.UserDto;
 import com.user.UserModule.response.UserResponse;
@@ -10,6 +11,7 @@ import com.user.UserModule.translator.ObjectTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="http://localhost:3000/")
 public class UserController {
 
     @Autowired
@@ -25,7 +28,17 @@ public class UserController {
     @Autowired
     ObjectTranslator objectTranslator;
 
-
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest) {
+        UserDto userDto = objectTranslator.translate(loginRequest, UserDto.class);
+        UserDto responseUserDto = userService.login(userDto);
+        if(responseUserDto == null){
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            UserResponse userResponse = objectTranslator.translate(responseUserDto, UserResponse.class);
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        }
+    }
 
    @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {

@@ -20,9 +20,6 @@ public class UpdateUserRequest {
     @NotNull@NotBlank@NotEmpty
     private String email;
     @NotNull@NotBlank@NotEmpty
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$", message = "password should have uppercase and lowercase and special character.")
-    private String password;
-    @NotNull@NotBlank@NotEmpty
     private String firstName;
     @NotNull@NotBlank@NotEmpty
     private String lastName;

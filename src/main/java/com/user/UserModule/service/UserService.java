@@ -19,6 +19,9 @@ public class UserService {
     @Autowired
     PublishService publishService;
 
+    public UserDto login(UserDto userDto) {
+        return userDao.findUserByEmailAndId(userDto);
+    }
 
     public List<UserDto> getAllUsers(){
 
@@ -52,5 +55,6 @@ public class UserService {
         String message = objectTranslator.translatePayloadAsString(userId, "DELETE");
         publishService.publishMessage(message, "user");
     }
+
 
 }

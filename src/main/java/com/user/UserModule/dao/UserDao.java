@@ -20,6 +20,19 @@ public class UserDao {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+
+    public UserDto findUserByEmailAndId(UserDto userDto) {
+        UserDto savedUserDto = null;
+        UserEntity savedUserEntity = userRepository.findByEmailAndPassword(
+                userDto.getEmail(), userDto.getPassword());
+        if(savedUserEntity==null){
+            return savedUserDto;
+        }
+        savedUserDto = objectTranslator.userEntityToUserDtoConverter(savedUserEntity);
+
+        return savedUserDto;
+    }
+
     public List<UserDto> getAllUsers(){
 
         List<UserEntity> usersEntity = userRepository.findAll();
@@ -74,7 +87,7 @@ public class UserDao {
         addressRepository.save(address);
 
         previousDetails.setEmail(userDto.getEmail());
-        previousDetails.setPassword(userDto.getPassword());
+
         previousDetails.setFirstName(userDto.getFirstName());
         previousDetails.setLastName(userDto.getLastName());
         previousDetails.setAddress(address);
@@ -88,5 +101,6 @@ public class UserDao {
     public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
     }
+
 
 }
