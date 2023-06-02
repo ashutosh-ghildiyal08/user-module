@@ -12,12 +12,9 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @ToString
 public class UpdateUserRequest {
-    @NotNull
-    @NotBlank
-    @NotEmpty
+
     private String id;
-    @Email
-    @NotNull@NotBlank@NotEmpty
+
     private String email;
     @NotNull@NotBlank@NotEmpty
     private String firstName;

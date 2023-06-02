@@ -33,7 +33,7 @@ public class UserController {
         UserDto userDto = objectTranslator.translate(loginRequest, UserDto.class);
         UserDto responseUserDto = userService.login(userDto);
         if(responseUserDto == null){
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             UserResponse userResponse = objectTranslator.translate(responseUserDto, UserResponse.class);
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest) {
         UserDto userDto = objectTranslator.translate(updateUserRequest, UserDto.class);
         UserDto responseUserDto = userService.updateUser(userDto);
         UserResponse userResponse = objectTranslator.translate(responseUserDto, UserResponse.class);
